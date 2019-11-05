@@ -1,0 +1,59 @@
+<!--Para los grupos utilizamos el tag from y el propert binfding con la variable de la clase-->
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label>
+        FirstName
+        <!--en este caso utilizamos el attr formControlName para asociar 
+            los valores a las keys que hemos definido antes-->
+        <input type="text" formControlName="firstName">
+    </label>
+    <!--puedes añternar y anidar dependiendo de las parámetros del formControl-->
+    <span *ngIf="firstName.hasError('required') && firstName.touched">This field is required</span>
+    <span *ngIf="firstName.hasError('maxLength')">Max length allowed {{firstName.errors.maxLength.requiredLenght}}</span>
+    <p>{{firstName.errors | json}}</p>
+    <label>
+        LastName
+        <input type="text" formControlName="lastName">
+    </label>
+    <!--también tenemos grupos dentro de grupos-->
+    <div formGroupName="address">
+            <h3>Address</h3>
+          
+            <label>
+              Street:
+              <input type="text" formControlName="street">
+            </label>
+          
+            <label>
+              City:
+              <input type="text" formControlName="city">
+            </label>
+            
+            <label>
+              State:
+              <input type="text" formControlName="state">
+            </label>
+          
+            <label>
+              Zip Code:
+              <input type="text" formControlName="zip">
+            </label>
+    </div>
+    <div formArrayName="aliases">
+            <h3>Aliases</h3> 
+            <button (click)="addAlias()">Add Alias</button>
+            <!--con las expresion ; let i = index lo que hacemos es guardar el indice del elemento iterado-->
+            <div *ngFor="let alias of aliases.controls; let i=index">
+              <!-- The repeated alias template -->
+              <label>
+                Alias:
+                <input type="text" [formControlName]="i">
+              </label>
+            </div>
+          </div>
+    <!--mientras no este validado el form el boton estará deshabilitado-->
+    <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+</form>
+<p>Status : {{profileForm.status}}</p>
+<p>Object : {{profileForm.value | json}}</p>
+<button type="submit" (click)="update()">Update</button>
+

@@ -1,0 +1,10 @@
+<label>
+    Name
+    <input type="text" [formControl]="name">
+</label>
+<!--Podemos acceder de forma directa al valor del imput-->
+<p>
+    Value: {{name.value}}
+</p>
+
+<button type="submit" (click)="updateName('Greter')">Update</button>
